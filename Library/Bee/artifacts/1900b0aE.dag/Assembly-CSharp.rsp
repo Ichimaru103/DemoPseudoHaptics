@@ -553,6 +553,8 @@
 "Assets/Oculus/SampleFramework/Usage/TouchPro/Scripts/Ui/UiDeviceInspector.cs"
 "Assets/Oculus/SampleFramework/Usage/TouchPro/Scripts/Ui/UiSceneMenu.cs"
 "Assets/Oculus/SampleFramework/Usage/TouchPro/Scripts/Ui/UiVectorInspector.cs"
+"Assets/Pseudo Haptics/Freeze.cs"
+"Assets/Pseudo Haptics/PseudoHaptics.cs"
 -langversion:9.0
 
 /deterministic

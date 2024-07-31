@@ -9,6 +9,7 @@ TagManager:
   - 1.4
   - 1.2
   - 0.8
+  - not
   layers:
   - Default
   - TransparentFX

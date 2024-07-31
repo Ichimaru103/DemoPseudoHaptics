@@ -10,6 +10,7 @@ public class PseudoHaptics : MonoBehaviour
     [SerializeField] OVRHand MYHand;
     [SerializeField] OVRSkeleton MYSkelton;
 
+    public GameObject FixedBox;
     Vector3 pos_FakeHand;
     Vector3 pos_RealHand;
     Vector3 pos_start;
@@ -121,28 +122,45 @@ public class PseudoHaptics : MonoBehaviour
             Debug.Log("0.6 CD="+ CD);
 
         }
+        
     }
     void OnTriggerStay(Collider other)
     {
-
-        if (ThumbPinchStrength > 0.9)///‚Â‚©‚ñ‚¾
+        if (other.gameObject.tag == "not")
         {
-            other.gameObject.transform.parent = IndexSphere.transform;
-            other.GetComponent<Rigidbody>().isKinematic = true;
-            other.gameObject.transform.localPosition = Vector3.zero;
-            flag_start = true;
-            
-            
-
-
+            return;
         }
-        else///‚Í‚È‚µ‚½
+        else
         {
-            other.GetComponent<Rigidbody>().isKinematic = false;
-            other.transform.parent = null;
-            flag_start = false;
+            if (ThumbPinchStrength > 0.7)///‚Â‚©‚ñ‚¾
+            {
+                other.gameObject.transform.parent = IndexSphere.transform;
+                other.GetComponent<Rigidbody>().isKinematic = true;
+                Rigidbody other_Rig = other.GetComponent<Rigidbody>();
+                var rb = FixedBox.GetComponent<Rigidbody>();
+                other_Rig.constraints = RigidbodyConstraints.FreezePositionX;
+                //other_Rig.constraints = RigidbodyConstraints.FreezePositionY;
+                other_Rig.constraints = RigidbodyConstraints.FreezePositionZ;
 
+                other_Rig.constraints = RigidbodyConstraints.FreezeRotation;
+
+                other.gameObject.transform.localPosition = Vector3.zero;
+                flag_start = true;
+
+
+
+
+            }
+            else///‚Í‚È‚µ‚½
+            {
+                other.GetComponent<Rigidbody>().isKinematic = false;
+                other.transform.parent = null;
+                
+                flag_start = false;
+
+            }
         }
+       
     }
 
 }
