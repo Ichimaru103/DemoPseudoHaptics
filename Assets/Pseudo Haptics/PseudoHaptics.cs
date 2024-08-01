@@ -73,16 +73,17 @@ public class PseudoHaptics : MonoBehaviour
             IndexSphere.transform.position = Vector3.zero;
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CD = 1.0f;
+            flag_reset = true;
 
-        if (Input.GetKeyDown("space"))
-        {
-            flag_start = true;
-            pos_start = RealHand.transform.position;
+
+
         }
-        else if (Input.GetKeyDown("a"))
-        {
-            flag_start = false;
-        }
+
+
+
         if (flag_start)
         {
             dis_pos = pos_RealHand - pos_start;
@@ -101,72 +102,74 @@ public class PseudoHaptics : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         pos_start = RealHand.transform.position;
-        if(other.gameObject.tag == "1.4")
+        if(grab_count == 0)
         {
-            CD = 1.4f;
-            
-        }
-        if (other.gameObject.tag == "1.2")
-        {
-            CD = 1.2f;
-         
-
-        }
-        if (other.gameObject.tag == "1.0")
-        {
-            CD = 1.0f;
-           
-
-        }
-        if (other.gameObject.tag == "0.8")
-        {
-            CD = 0.8f;
-            
-
-        }
-        if (other.gameObject.tag == "0.6")
-        {
-            CD = 0.6f;
-            
-
-        }
-        if(other.gameObject.tag == "reset")
-        {
-            CD = 1.0f;
-            flag_reset = true;
-        }
-
-        if (other.gameObject.tag == "UP")
-        {
-            if(CD < 1.4f)
+            if (other.gameObject.tag == "1.4")
             {
-                CD = CD + 0.1f;
+                CD = 1.4f;
+
+            }
+            if (other.gameObject.tag == "1.2")
+            {
+                CD = 1.2f;
+
+
+            }
+            if (other.gameObject.tag == "1.0")
+            {
+                CD = 1.0f;
+
+
+            }
+            if (other.gameObject.tag == "0.8")
+            {
+                CD = 0.8f;
+
+
+            }
+            if (other.gameObject.tag == "0.6")
+            {
+                CD = 0.6f;
+
+
+            }
+            if (other.gameObject.tag == "reset")
+            {
+                CD = 1.0f;
+                flag_reset = true;
             }
 
-            
-
-            CD = CD * 10;
-            CD = Mathf.Floor(CD) / 10;
-
-
-
-
-        }
-        if (other.gameObject.tag == "DOWN")
-        {
-            if(CD > 0.6f)
+            if (other.gameObject.tag == "UP")
             {
-                CD = CD - 0.1f;
+                if (CD < 1.4f)
+                {
+                    CD = CD + 0.1f;
+                }
+
+                CD = CD * 10;
+                CD = Mathf.Floor(CD) / 10;
             }
 
-            CD = CD * 10;
-            CD = Mathf.Ceil(CD) / 10;
-           
+            if (other.gameObject.tag == "DOWN")
+            {
+                if (CD > 0.6f)
+                {
+                    CD = CD - 0.1f;
+                }
 
+                CD = CD * 10;
+                CD = Mathf.Ceil(CD) / 10;
+
+            }
 
         }
-        
-        
+        else
+        {
+            return;
+        }
+
+
+
     }
     void OnTriggerStay(Collider other)
     {
@@ -182,7 +185,10 @@ public class PseudoHaptics : MonoBehaviour
         {
             return;
         }
-        else if (other.gameObject.tag == "reset");
+        else if (other.gameObject.tag == "reset")
+        {
+            flag_reset = true;
+        }
         else
         {
             if (ThumbPinchStrength > 0.7)///‚Â‚©‚ñ‚¾
