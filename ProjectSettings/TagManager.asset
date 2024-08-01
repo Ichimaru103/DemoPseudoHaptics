@@ -10,6 +10,9 @@ TagManager:
   - 1.2
   - 0.8
   - not
+  - DOWN
+  - UP
+  - reset
   layers:
   - Default
   - TransparentFX

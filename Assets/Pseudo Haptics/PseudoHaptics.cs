@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PseudoHaptics : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PseudoHaptics : MonoBehaviour
     public GameObject FakeHand;
     [SerializeField] OVRHand MYHand;
     [SerializeField] OVRSkeleton MYSkelton;
+
+    public PseudoHaptics PseudoHaptics_other;
 
     public GameObject FixedBox;
     Vector3 pos_FakeHand;
@@ -30,12 +33,17 @@ public class PseudoHaptics : MonoBehaviour
     public float CD;
     Vector3 dis_pos;
 
+    public int grab_count;
+
 
     bool flag_start;
-
+    public bool flag_reset;
     void Start()
     {
         flag_start = false;
+        flag_reset = false;
+        CD = 1.0f;
+        grab_count = 0;
     }
 
     // Update is called once per frame
@@ -96,32 +104,68 @@ public class PseudoHaptics : MonoBehaviour
         if(other.gameObject.tag == "1.4")
         {
             CD = 1.4f;
-            Debug.Log("1.4 CD="+ CD);
+            
         }
         if (other.gameObject.tag == "1.2")
         {
             CD = 1.2f;
-            Debug.Log("1.2 CD="+ CD);
+         
 
         }
         if (other.gameObject.tag == "1.0")
         {
             CD = 1.0f;
-            Debug.Log("1.0 CD="+ CD);
+           
 
         }
         if (other.gameObject.tag == "0.8")
         {
             CD = 0.8f;
-            Debug.Log("0.8 CD="+ CD);
+            
 
         }
         if (other.gameObject.tag == "0.6")
         {
             CD = 0.6f;
-            Debug.Log("0.6 CD="+ CD);
+            
 
         }
+        if(other.gameObject.tag == "reset")
+        {
+            CD = 1.0f;
+            flag_reset = true;
+        }
+
+        if (other.gameObject.tag == "UP")
+        {
+            if(CD < 1.4f)
+            {
+                CD = CD + 0.1f;
+            }
+
+            
+
+            CD = CD * 10;
+            CD = Mathf.Floor(CD) / 10;
+
+
+
+
+        }
+        if (other.gameObject.tag == "DOWN")
+        {
+            if(CD > 0.6f)
+            {
+                CD = CD - 0.1f;
+            }
+
+            CD = CD * 10;
+            CD = Mathf.Ceil(CD) / 10;
+           
+
+
+        }
+        
         
     }
     void OnTriggerStay(Collider other)
@@ -130,6 +174,15 @@ public class PseudoHaptics : MonoBehaviour
         {
             return;
         }
+        else if (other.gameObject.tag == "UP")
+        {
+            return;
+        }
+        else if (other.gameObject.tag == "DOWN")
+        {
+            return;
+        }
+        else if (other.gameObject.tag == "reset");
         else
         {
             if (ThumbPinchStrength > 0.7)///‚Â‚©‚ñ‚¾
@@ -146,6 +199,7 @@ public class PseudoHaptics : MonoBehaviour
 
                 other.gameObject.transform.localPosition = Vector3.zero;
                 flag_start = true;
+                grab_count = 1;
 
 
 
@@ -155,8 +209,9 @@ public class PseudoHaptics : MonoBehaviour
             {
                 other.GetComponent<Rigidbody>().isKinematic = false;
                 other.transform.parent = null;
-                
+
                 flag_start = false;
+                grab_count = 0;
 
             }
         }
