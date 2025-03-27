@@ -13,6 +13,8 @@ TagManager:
   - DOWN
   - UP
   - reset
+  - hand
+  - reset_pos
   layers:
   - Default
   - TransparentFX

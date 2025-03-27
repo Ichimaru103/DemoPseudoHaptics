@@ -32,6 +32,7 @@ public class PseudoHaptics : MonoBehaviour
 
     public float CD;
     Vector3 dis_pos;
+    float dis_y;
 
     public int grab_count;
 
@@ -86,8 +87,11 @@ public class PseudoHaptics : MonoBehaviour
 
         if (flag_start)
         {
-            dis_pos = pos_RealHand - pos_start;
-            pos_FakeHand = pos_start + dis_pos * CD;
+            dis_y = pos_RealHand.y - pos_start.y;
+            //dis_pos = pos_RealHand - pos_start;
+            pos_FakeHand.x = pos_RealHand.x;
+            pos_FakeHand.y = pos_start.y + dis_y * CD;
+            pos_FakeHand.z = pos_RealHand.z;
             FakeHand.transform.position = pos_FakeHand;
         }
         else
